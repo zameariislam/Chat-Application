@@ -10,8 +10,10 @@ const peopleSchema = mongoose.Schema(
         },
         email: {
             type: String,
+
             required: true,
             trim: true,
+           
             unique:true,
             lowercase: true,
             validator: {
@@ -23,6 +25,7 @@ const peopleSchema = mongoose.Schema(
         mobile: {
             type: String,
             required: true,
+            unique:true
         },
         password: {
             type: String,

@@ -1,28 +1,42 @@
 
-const uploader = require('../../utilities/singleUploader')
+const upload = require('multer-uploader')
+const path = require('path')
+
 const avatarUpload = (req, res, next) => {
+    // absolute path of your upload directory
 
-    const upload = uploader('avatar', ['image/jpeg', 'image/jpg', 'image/png'], 1000000,
-        'Only .jpg, jpeg or .png format allowed !!'
-    )
+    const uploadDir = path.join(__dirname, '../../public/uploads/avatar')
+    const max_file_size = 1000000;
+    const allowed_file_mime_type = ["image/png", "image/jpg", "image/jpeg"];
 
-    upload.any()()(req, res, (err) => {
-        if (err) {
+    upload(uploadDir, max_file_size, allowed_file_mime_type)
+        .single('avatar')(req, res, (err) => {
+            if (err) {
+                const user=req.body
+                res.render('users',{
+                    user,
+                    
+                })
+               
 
-            res.status(500).json({
-                errors: {
-                    avatar: {
-                        msg: err.message
-                    }
-                }
-            })
 
-        }
-        else {
-            next()
-        }
 
-    })
+            }
+            else {
+                next()
+
+
+            }
+
+        })
+
+
+
+
+
+
+
+
 
 
 }

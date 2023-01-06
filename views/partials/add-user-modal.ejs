@@ -35,6 +35,7 @@
 <script>
     const modal = document.querySelector("#add-user-modal");
     const form = document.querySelector('#add-user-form')
+    console.log(form)
     function closeModal() {
         modal.style.display = "none";
     }
@@ -43,10 +44,12 @@
     }
 
     // form submit handler 
-    form.onsubmit = async function (event) {
+    form.addEventListener('submit',) = async function (event) {
         event.preventDefault()
+        console.log('I am clicked')
         // prepare the form data 
         const formDate = new FormData(form)
+        console.log(FormData)
 
 
         // send request to the server 
@@ -57,19 +60,19 @@
         })
 
         //  get response 
-        let result = await response.json()
+        // let result = await response.json()
 
         // handle Errors and response 
 
-        if (result.errors) {
-            Object.keys(result.errors).forEach(fieldName => {
-                form[fieldName].classList.add('error')
-                const errorPlaceholder = document.querySelector(`.${fieldName}-error`)
-                errorPlaceholder.textContent = result.errors[fieldName].msg
-                errorPlaceholder.style.display = 'block'
-            })
+        // if (result.errors) {
+        //     Object.keys(result.errors).forEach(fieldName => {
+        //         form[fieldName].classList.add('error')
+        //         const errorPlaceholder = document.querySelector(`.${fieldName}-error`)
+        //         errorPlaceholder.textContent = result.errors[fieldName].msg
+        //         errorPlaceholder.style.display = 'block'
+        //     })
 
-        }
+        // }
 
 
 

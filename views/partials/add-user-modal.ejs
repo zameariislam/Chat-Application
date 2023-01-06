@@ -1,0 +1,78 @@
+<div class="modal-wrapper" id="add-user-modal">
+    <div class="modal">
+        <a href="#" onclick="closeModal()" class="modal-close">+</a>
+        <div class="modal-title">
+            <h2>Create New User</h2>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/users" enctype="multipart/form-data" id="add-user-form">
+                <input type="text"
+                
+
+                 placeholder="enter name" name="name" />
+                <p class="error name-error ">This is error</p>
+
+                <input type="text" placeholder="enter email" 
+                required
+                name="email" />
+                <p class="error email-error"></p>
+                <input type="text" placeholder="enter mobile"
+                required
+                 name="mobile" />
+                <p class="error mobile-error"></p>
+                <input type="password"
+                required
+                 placeholder="enter password" name="password" />
+                <p class="error password-error"></p>
+                <input type="file" accept="image/png,image/jpeg,image/jpg " name="avatar" />
+                <p class="error avatar-error"></p>
+                <p class="error common-error"></p>
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    const modal = document.querySelector("#add-user-modal");
+    const form = document.querySelector('#add-user-form')
+    function closeModal() {
+        modal.style.display = "none";
+    }
+    function openModal() {
+        modal.style.display = "block";
+    }
+
+    // form submit handler 
+    form.onsubmit = async function (event) {
+        event.preventDefault()
+        // prepare the form data 
+        const formDate = new FormData(form)
+
+
+        // send request to the server 
+        let response = await fetch('/users', {
+            method: 'POST',
+            body: formDate
+
+        })
+
+        //  get response 
+        let result = await response.json()
+
+        // handle Errors and response 
+
+        if (result.errors) {
+            Object.keys(result.errors).forEach(fieldName => {
+                form[fieldName].classList.add('error')
+                const errorPlaceholder = document.querySelector(`.${fieldName}-error`)
+                errorPlaceholder.textContent = result.errors[fieldName].msg
+                errorPlaceholder.style.display = 'block'
+            })
+
+        }
+
+
+
+    }
+
+</script>

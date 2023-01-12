@@ -1,12 +1,13 @@
+// external imports
+const express = require("express");
 
-const express = require('express')
-const router = express.Router()
-const { getLogin } = require('../controller/loginController')
-const decorateHtmlResponse = require('../middlewares/common/decorateHtlResponse')
+// internal imports
+const { getLogin } = require("../controller/loginController");
+const decorateHtmlResponse = require("../middlewares/common/decorateHtlResponse");
 
+const router = express.Router();
 
-router.get('/', decorateHtmlResponse('Login'), getLogin)
+// login page
+router.get("/", decorateHtmlResponse("Login"), getLogin);
 
-
-
-module.exports = router
+module.exports = router;

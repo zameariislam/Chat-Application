@@ -16,6 +16,7 @@ const getLogin = (req, res, next) => {
 }
 
 const login = async (req, res, next) => {
+    console.log('I am from controller')
 
     try {
         // find user from database
@@ -29,9 +30,11 @@ const login = async (req, res, next) => {
         if (user && user._id) {
 
             //  password validation 
+
             const isValidPassword = await bcrypt.compare(req.body.password, user.password)
 
             if (isValidPassword) {
+
                 // make user object 
 
                 const userObject = {
@@ -74,7 +77,7 @@ const login = async (req, res, next) => {
 
     }
     catch (err) {
-        console.log(err.message)
+       
         res.render('index',{
             data:req.body.username,
             errors:{

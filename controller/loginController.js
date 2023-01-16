@@ -16,7 +16,7 @@ const getLogin = (req, res, next) => {
 }
 
 const login = async (req, res, next) => {
-    console.log('I am from controller')
+  
 
     try {
         // find user from database
@@ -25,7 +25,7 @@ const login = async (req, res, next) => {
             $or:
                 [{ email: req.body.username }, { mobile: req.body.username }]
         })
-        console.log(user)
+       
 
         if (user && user._id) {
 
@@ -57,6 +57,7 @@ const login = async (req, res, next) => {
                 })
 
                 // set logged in user to the locals 
+
                 res.locals.loggedInUser=userObject
                 res.render('inbox')
 
@@ -91,8 +92,16 @@ const login = async (req, res, next) => {
     }
 
 }
+const logOut=(req,res)=>{
+    res.clearCookie(process.env.COOKIE_NAME)
+    res.send('logout')
+
+
+
+}
 
 module.exports = {
     getLogin,
-    login
+    login,
+    logOut
 }

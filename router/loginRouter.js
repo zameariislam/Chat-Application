@@ -3,6 +3,7 @@ const express = require("express");
 
 // internal imports
 const { getLogin, login, logOut } = require("../controller/loginController");
+const { redirectLoggedIn } = require("../middlewares/common/checkLogin");
 
 const decorateHtmlResponse = require("../middlewares/common/decorateHtlResponse");
 const { doLoginValidators, loginValidationHandler } = require("../middlewares/login/loginValidator");
@@ -17,6 +18,8 @@ const page_title = 'Login'
 router.get("/",
 
     decorateHtmlResponse(page_title),
+    redirectLoggedIn,
+
     getLogin
 );
 

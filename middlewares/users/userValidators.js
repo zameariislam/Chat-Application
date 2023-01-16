@@ -68,29 +68,22 @@ const addUserValidationHandler = (req, res, next) => {
     const errors = validationResult(req)
 
     const mappedErrors = errors.mapped()
-    
+
 
     if ((Object.keys(mappedErrors)).length === 0) {
         next()
-       
+
     }
     else {
-
-        // // remove uploaded file 
-
-        // if (req.files.length>0 ) {
-        //     console.log('I am file')
-
-        //     const { filename } = req.files[0]
-        //     fs.unlink(path.join(__dirname, `/../public/uploads/avatars/${filename}`), (err) => {
-        //         if (err) console.log(err)
-        //     })
-
-        // }
-
         res.status(500).json({
             errors: mappedErrors
+
         })
+
+
+
+
+
 
 
 

@@ -24,7 +24,7 @@ const { errorHandler, notFoundHandler } = require('./middlewares/common/errorHan
 
 const loginRouter = require('./router/loginRouter')
 const usersRouter = require('./router/usersRouter')
-// const inboxRouter = require('./router/inboxRouter')
+const inboxRouter = require('./router/inboxRouter')
 
 const port = process.env.PORT || 5000
 
@@ -55,7 +55,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET))
 
 app.use('/',loginRouter)
 app.use('/users', usersRouter)
-// app.use('/inbox',inboxRouter)
+app.use('/inbox',inboxRouter)
 
 
 //   404 not found handler 

@@ -1,7 +1,7 @@
 
 // external imports 
 
-const bcrypt = require('bcrypt')
+
 const jwt = require('jsonwebtoken');
 const createError = require('http-errors')
 
@@ -16,74 +16,52 @@ const getLogin = (req, res, next) => {
 }
 
 const login = async (req, res, next) => {
-  
+
 
     try {
-        // find user from database
+        if (req.validUser) {
 
-        const user = await User.findOne({
-            $or:
-                [{ email: req.body.username }, { mobile: req.body.username }]
-        })
-       
+            // prepare the user object to generate token
+            const userObject = {
+                name: req.user.name,
+                mobile: req.user.mobile,
+                email: req.user.email,
+                role: "user",
+            };
 
-        if (user && user._id) {
+            // make token 
+            const token = jwt.sign(userObject , process.env.JWT_SECRET, {
+                expiresIn: process.env.JWT_EXPIRY
 
-            //  password validation 
-
-            const isValidPassword = await bcrypt.compare(req.body.password, user.password)
-
-            if (isValidPassword) {
-
-                // make user object 
-
-                const userObject = {
-                    name: user.name,
-                    email: user.email,
-                    mobile: user.mobile,
-                    role: 'user'
-                }
-                // make token 
-                const token = jwt.sign(userObject, process.env.JWT_SECRET, {
-                    expiresIn: process.env.JWT_EXPIRY
-
-                })
-                // set cookies 
-
-                res.cookie(process.env.COOKIE_NAME, token, {
-                    maxAge: process.env.JWT_EXPIRY,
-                    httpOnly: true,
-                    signed: true
-                })
-
-                // set logged in user to the locals 
-
-                res.locals.loggedInUser=userObject
-                res.render('inbox')
+            })
+            // set cookies 
 
 
-            }
-            else {
-
-                throw createError('Login failed !! Try again')
-
-            }
-
+            res.cookie(process.env.COOKIE_NAME, token, {
+                maxAge: process.env.JWT_EXPIRY,
+                httpOnly: true,
+                signed: true
+            })
+            res.locals.loggedInUser = userObject
+            res.render('inbox')
 
         }
         else {
-            throw createError('Login failed !! Try again')
+            throw createError("Login failed! Please try again.");
 
         }
 
+
     }
+
+
     catch (err) {
-       
-        res.render('index',{
-            data:req.body.username,
-            errors:{
-                common:{
-                    msg:err.message
+
+        res.render('index', {
+            data: req.body.username,
+            errors: {
+                common: {
+                    msg: err.message
                 }
             }
 
@@ -92,7 +70,7 @@ const login = async (req, res, next) => {
     }
 
 }
-const logOut=(req,res)=>{
+const logOut = (req, res) => {
     res.clearCookie(process.env.COOKIE_NAME)
     res.send('logout')
 

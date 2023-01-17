@@ -5,7 +5,7 @@ const { check } = require("express-validator");
 const router = express.Router();
 // internal imports
 const { getUsers, addUser, removeUser } = require("../controller/usersController");
-const {checkLogin} = require("../middlewares/common/checkLogin");
+const { checkLogin } = require("../middlewares/common/checkLogin");
 
 const decorateHtmlResponse = require("../middlewares/common/decorateHtlResponse");
 const avatarUpload = require("../middlewares/users/avatarUpload");

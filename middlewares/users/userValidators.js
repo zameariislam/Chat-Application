@@ -10,12 +10,14 @@ const addUserValidators = () => {
     return [
         check("name")
             .isLength({ min: 1 })
+            .toLowerCase()
             .withMessage("Name must not contain anything other than alphabet")
             .isAlpha("en-US", { ignore: " -" })
 
             .trim(),
         check("email")
             .isLength({ min: 1 })
+            .toLowerCase()
             .withMessage("Email is required")
             .isEmail()
             .withMessage("Invalid email address")
